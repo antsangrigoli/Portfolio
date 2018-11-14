@@ -1,0 +1,507 @@
+<html>
+<head>
+<title>Virtual Pest</title>
+<script LANGUAGE="JavaScript"><!-- hide from uneducated browsers
+
+// Naming the variables and the picture that goes with each "state" element.
+// There are a total of 14 states and images.        
+          var excited = new Image()
+          excited.src = "exciteddog.png"
+          var angry = new Image()
+          angry.src = "angrydog.png"
+          var lonely = new Image()
+          lonely.src = "lonelydog.png"
+          var provoked = new Image()
+          provoked.src = "provokeddog.png"
+          var sleeping = new Image()
+          sleeping.src = "sleepingdog.png"
+          var love = new Image()
+          love.src = "lovedog.png"
+          var death = new Image()
+          death.src = "deathdog.png"
+          var party1 = new Image()
+          party1.src = "partydog1.png"
+          var party2 = new Image()
+          party2.src = "partydog2.png"
+          var mediumdog = new Image()
+          mediumdog.src = "mediumdog.png"
+          var smalldog = new Image()
+          smalldog.src = "smalldog.png"
+          var mediumcat = new Image()
+          mediumcat.src = "mediumcat.png"
+          var smallcat = new Image()
+          smallcat.src = "smallcat.png"
+          var cat = new Image()
+          cat.src = "cat.png"
+          
+
+function textBox(text,bgcolor,fontcolor)
+	{
+		document.writeln("<table border=0 bgcolor=#" + bgcolor + 
+		                 " cellspacing=4 cellpadding=10 width=100%>")
+		document.writeln("<tr>\n<td>")
+		document.writeln("<p><font size=+3 color=" + fontcolor + "><b>" + text + 
+		                 "</b></font>")
+		document.writeln("</td>\n</tr>\n</table>")
+	}
+	
+// This function is called when the page is initially loaded. 
+// It initializes the value of the form's "state" element,
+// Calls Display in order to initialized the display,
+// Sets the simulation in motion by preparing a call
+// to the Simulate function after 1000 msec (= 1 second).
+function Initialize(theForm) 
+	{
+    
+          document.images[0].src = excited.src
+          theForm.state.value = "excited"
+          theForm.counter.value = 0  
+          Display(theForm)
+          setTimeout("Simulate(document.forms.Pest)",1000)
+    return ""
+	}
+
+// This function updates the form in order to 
+// make visible the effects of the pest's state.
+// No changes are made to the pest's state by
+// this function. The pest's state is retrieved from the "state"
+// element of the form.
+// When state ="death", it displays an alert and stops the time out.
+function Display(theForm) 
+	{
+    
+		   var state = theForm.state.value
+
+		  if( state == "excited" ) {
+			   document.images[0].src = excited.src
+			   theForm.petsound.value = "Woof Woof"
+			   theForm.petaction.value = "Wagging Tail"
+			   }
+		  else if( state == "provoked" ) {
+			  document.images[0].src = provoked.src
+			  theForm.petsound.value = "Grrr...."
+			  theForm.petaction.value = "BITE!!!"
+			  }
+		  else if( state == "angry" ) {
+			  document.images[0].src = angry.src
+			  theForm.petsound.value = "Bark!"
+			  theForm.petaction.value = "Death Stare..."
+			  }
+		  else if( state == "lonely" ) {  
+			  document.images[0].src = lonely.src
+			  theForm.petsound.value = "Howl"
+			  theForm.petaction.value = ""
+			  }
+		  else if( state == "sleeping" ) {  
+			  document.images[0].src = sleeping.src
+			  theForm.petsound.value = "ZZZzzz"
+			  theForm.petaction.value = "Snoring"
+			  }
+		  else if( state == "love" ) {  
+			  document.images[0].src = love.src
+			  theForm.petsound.value = "<3"
+			  theForm.petaction.value = "Licking You"
+			  }
+		  else if( state == "party1" ) {  
+			  document.images[0].src = party1.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "Dancing"
+			  }
+	      else if( state == "party2" ) {  
+			  document.images[0].src = party2.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "Dancing"
+			  }		  	  
+		  else if( state == "death" ) {  
+			  document.images[0].src = death.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "DEAD..."
+			  alert('You Killed Buddy!?! Click OK and Refresh the Page to Start Over')
+			  stopTimeout("Simulate(document.forms.Pest)",1000)
+			  }
+		  else if( state == "smalldog" ) {  
+			  document.images[0].src = smalldog.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "changing"
+			  }	
+		  else if( state == "mediumdog" ) {  
+			  document.images[0].src = mediumdog.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "changing"
+			  }	
+		  else if( state == "smallcat" ) {  
+			  document.images[0].src = smallcat.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "changing"
+			  }	
+		  else if( state == "mediumcat" ) {  
+			  document.images[0].src = mediumcat.src
+			  theForm.petsound.value = ""
+			  theForm.petaction.value = "changing"
+			  }		  	  	  	   	
+		  else if( state == "cat" ) {  
+			  document.images[0].src = cat.src
+			  theForm.petsound.value = "MEOW"
+			  theForm.petaction.value = ""
+			  }		    	  
+		  return ""
+	}
+
+// This function is called when the "Pet Buddy" 
+// button is clicked. Below you can see which 
+// state are effected by certain states.
+// The pest's state is retrieved from the "state" element of the form.
+// The display is updated to reflect the pest's state.
+function Pet(theForm) 
+	{
+    
+	      var state = theForm.state.value
+
+		  if(state == "angry" )
+			  theForm.state.value = "provoked"
+		  else if((state == "lonely")||
+		  	      (state == "party1")||
+		  	      (state == "party2"))
+			  theForm.state.value = "excited"
+		  else if(state == "sleeping" )
+			  theForm.state.value = "angry"	  
+		  else if(state == "excited" )
+			  theForm.state.value = "love"	 	  
+
+			 Display(theForm)
+
+      return ""
+	}
+
+// This function is called when the "Give Bone" 
+// button is clicked. Below you can see which 
+// state are effected by certain states.
+// The pest's state is retrieved from the "state" element of the form.
+// The display is updated to reflect the pest's state.    
+function Bone(theForm) 
+	{
+    
+	      var state = theForm.state.value
+	      
+		  if((state == "angry")||
+		     (state=="sleeping")||
+		     (state=="lonely")||
+		     (state=="provoked")||
+		     (state=="love")||
+		     (state=="party1")||
+		     (state=="party2"))
+			  theForm.state.value = "excited"	  
+		  	  
+			 Display(theForm)
+
+      return ""
+	}
+
+// This function is called when a food item is selected and the "Feed" 
+// button is clicked. Below you can see which 
+// state are effected by certain states.
+// The pest's state is retrieved from the "state" element of the form.
+// The display is updated to reflect the pest's state.    
+function Feed(theForm)
+	{
+
+		var state=theForm.state.value
+		var food=theForm.food.selectedIndex
+
+		if((state=="angry" && food==1)||
+		   (state=="lonely" && food==1)||
+		   (state=="party1" && food==1)||
+		   (state=="party2" && food==1)||
+		   (state=="provoked" && food==1))
+			theForm.state.value="excited"
+		else if((state=="angry" && food==2)||
+		   (state=="lonely" && food==2)||
+		   (state=="party1" && food==2)||
+		   (state=="party2" && food==2)||
+		   (state=="excited" && food==2)||
+		   (state=="provoked" && food==2))
+			theForm.state.value="love"
+		else if((state=="angry" && food==3)||
+		   (state=="lonely" && food==3)||
+		   (state=="party1" && food==3)||
+		   (state=="party2" && food==3)||
+		   (state=="love" && food==3)||
+		   (state=="excited" && food==3)||
+		   (state=="provoked" && food==3))
+			theForm.state.value="death"	
+		
+
+			Display(theForm)
+
+	return""
+	}
+
+// This function is called when the "Random Dancing :)" 
+// button is clicked. Below you can see which 
+// state are effected by certain states.
+// The pest's state is retrieved from the "state" element of the form.
+// The display is updated to reflect the pest's state.	
+function Dance(theForm)
+	{
+	
+		var state = theForm.state.value
+	
+		  if((state == "angry")||
+		     (state=="sleeping")||
+		     (state=="lonely")||
+		     (state=="provoked")||
+		     (state=="excited")||
+		     (state=="love"))
+			  theForm.state.value = "party1"
+			  
+			Display(theForm)
+	
+	return""	
+	}
+
+// This function is called when the "DO NOT PRESS" 
+// button is clicked. Below you can see which 
+// state are effected by certain states.
+// The pest's state is retrieved from the "state" element of the form.
+// The display is updated to reflect the pest's state.	
+function Cat(theForm)
+	{
+	
+		var state = theForm.state.value
+	
+		  if((state == "angry")||
+		     (state=="sleeping")||
+		     (state=="lonely")||
+		     (state=="provoked")||
+		     (state=="excited")||
+		     (state=="party1")||
+		     (state=="party2")||
+		     (state=="love"))
+			  theForm.state.value = "mediumdog"
+			  
+			Display(theForm)
+	
+	return""	
+	}	
+	
+// This function is the heart of a simulation
+// of state transitions reflected in a finite-state
+// machine. Depending on which state is up, 
+// it has a percentage of changing to output state.	
+// The pest's state is retrieved from the "state"
+// element of the form.
+// A random number in the interval (0,1) is generated.	
+// The Simulate function is set to run again after a delay.
+function Simulate(theForm) 
+	{
+
+		  theForm.counter.value++ // updates the Simulate counter.
+      
+		  var state = theForm.state.value
+		  var n = Math.random()
+
+		  if( state == "provoked" && n < 0.30 ) 
+			  theForm.state.value = "lonely"
+		  else if( state == "excited" && n < 0.25 )
+			  theForm.state.value = "angry"
+		  else if( state == "lonely" && n < 0.20 )
+			  theForm.state.value = "sleeping"	
+		  else if( state == "love" && n < 0.10 )
+			  theForm.state.value = "excited"	
+		  else if( state == "party1" && n < 1 )
+		      theForm.state.value = "party2"
+		  else if( state == "party2" && n < 1 )
+			  theForm.state.value = "party1"	
+		  else if( state == "mediumdog" && n < 1 )
+			  theForm.state.value = "smalldog"
+		  else if( state == "smalldog" && n < 1 )
+			  theForm.state.value = "smallcat"	
+		  else if( state == "smallcat" && n < 1 )
+			  theForm.state.value = "mediumcat"
+		  else if( state == "mediumcat" && n < 1 )
+			  theForm.state.value = "cat"  	    		      
+
+			 Display(theForm)
+
+			setTimeout("Simulate(document.forms.Pest)",1000)
+
+      return ""
+	}
+	
+// Naming variables and making regular expressions.
+// Everytime you input a word that matches the pattern below,
+// the output will be fixed with an answer.
+	var RE_IHave = /([\w ]*)I +have([\w ]*)/
+	var RE_dog = /([\w ]*)dog([\w ]*)/i
+	var RE_buddy = /([\w ]*)Buddy([\w ]*)/i
+	var RE_name = /([\w ]*)My +name +is([\w ]*)/i
+	var RE_cats = /([\w ]*)cat([\w ]*)/i
+	var RE_sit = /([\w ]*)sit([\w ]*)/i
+	var RE_rollover = /([\w ]*)rollover([\w ]*)/i
+	var RE_paw = /([\w ]*)paw([\w ]*)/i
+	
+	
+	var genericResponse = new Array(
+								"Tell me more...",
+								"Do you really mean that?",
+								"I'm not sure what you mean.",
+								"What kind of animal am I?",
+								"Tell me a command"
+									)
+									
+	var catsResponse = new Array(
+								"I DESPISE CATS",
+								"I want to chase a cat right now",
+								"DOGS > CATS"
+									)
+
+	function toggleYouMe(sentence)
+	{
+		var OccurrencesOfI = /\bI\b/gi
+		var OccurrencesOfMe = /\bme\b/gi
+		var OccurrencesOfYou = /\byou\b/gi
+		var OccurrencesOfZZIZZZZ = /\bZZIZZZZ\b/gi
+
+		var newSentence = sentence.replace(OccurrencesOfI,"ZZIZZZZ")
+		newSentence = newSentence.replace(OccurrencesOfMe,"ZZIZZZZ")
+		newSentence = newSentence.replace(OccurrencesOfYou,"I")
+		newSentence = newSentence.replace(OccurrencesOfZZIZZZZ,"you")
+		
+		return newSentence
+	}
+
+// The predetermined sentences for the output if a pattern is found.
+// toggleYouMe(RegExp.$2) will write back the input you put in.
+	function matchIt(myForm)
+	{
+		var sentence = myForm.input.value
+		
+		if(RE_IHave.test(sentence)) 
+		{
+			myForm.output.value = "Are you happy you have" + toggleYouMe(RegExp.$2) + "?"
+			return true
+		}
+		else if(RE_dog.test(sentence))
+		{
+			myForm.output.value = "I am a dog. What is my name?"
+			return true
+		}
+		else if(RE_buddy.test(sentence))
+		{
+			myForm.output.value = "Correct! What is your name?"
+			return true
+		}
+		else if(RE_name.test(sentence))
+		{
+			myForm.output.value = "I love you" + toggleYouMe(RegExp.$2) + "!"
+			return true
+		}
+		else if(RE_sit.test(sentence))
+		{
+			myForm.output.value = "Im already sitting..."
+			return true
+		}
+		else if(RE_rollover.test(sentence))
+		{
+			myForm.output.value = "Im to fat for that :("
+			return true
+		}
+		else if(RE_paw.test(sentence))
+		{
+			myForm.output.value = "HIGH FIVE!"
+			return true
+		}
+		else if(RE_cats.test(sentence))
+		{
+		
+		var index1 = Math.floor(Math.random()*catsResponse.length)
+		myForm.output.value = catsResponse[index1]
+		myForm.input.focus()
+		myForm.input.select()
+		
+		return false
+		}
+		
+		
+		var index = Math.floor(Math.random()*genericResponse.length)
+		myForm.output.value = genericResponse[index]
+		myForm.input.focus()
+		myForm.input.select()
+		
+		return false
+	}	
+    
+  // end hiding from uneducated browsers  --></script>
+</head>
+
+
+<body bgcolor="#0000FF" onLoad="Initialize(document.forms.Pest)">
+<script language="JavaScript" type="text/JavaScript">
+<!-- hide script from uneducated browsers
+	textBox("Buddy, The Dog<br>" + 
+	         "<font size=-1>Your very own virtual pet!</font>",
+			 "0000FF","FFFFFF")
+// end hiding from uneducated browsers -->
+</script>
+
+<form name="Pest" action="" method=POST>
+  <table width="100%" border="0" cellpadding="8" cellspacing="8" bordercolor="#0000FF" bgcolor="#00FFFF">
+  <tr> 
+      <td><p> 
+      <h2 align=center><font color="#0000FF"> Buddy </font><br/>
+<img src="dog.png" align=middle /></h2> 
+</td></tr>
+ 
+ <table width="100%" border="0" cellpadding="8" cellspacing="8" bordercolor="#0000FF" bgcolor="#0000FF">
+  <tr> 
+      <td>
+<p align="center">
+  <font color="FFFFFF">Sound:</font>
+    <input type=text name=petsound value="" size=50 />	
+<p align="center">
+  <font color="FFFFFF">Action:</font>
+    <input type=text name=petaction value="" size=50 />
+</p>
+<!--  
+<p>
+    <font color="FFFFFF">The pest's state:</font>
+-->    
+    <input type=hidden name=state value="" size=30 />
+<!--    
+    <font color="FFFFFF">Step counter:</font>
+-->    
+    <input type=hidden name=counter value="" size=30 />
+</p>
+
+<p align="center">
+    <input type=button name=Button value="Pet Buddy" onClick="Pet(this.form)" />
+    <input type=button name=Button value="Give Bone" onClick="Bone(this.form)" />
+    <input type=button name=Button value="Random Dancing! :)" onClick="Dance(this.form)" />
+</p>
+  
+<p align="center">  
+	<font color="FFFFFF">Select type of food</font>
+	<select name="food">
+  		<option>Choose One</option>
+  		<option>Treat</option>
+  		<option>Chicken</option>  
+  		<option>Chocolate</option>
+	</select>
+	<input type=button name=Button value="Feed" onClick="Feed(this.form)"/>
+<p align="center">
+	<font color="FF0000">Input:</font>
+  	<input name="input" type="text" size="50">
+  	<font color="FF0000">Output:</font> 
+  	<input name="output" type="text" size="50">
+  	<input type="button" value="Submit Input" onClick="matchIt(this.form)">
+<p align="center">
+	<input type=button name=Button value="DO NOT PRESS" onClick="Cat(this.form)" />  
+<p align="center">
+	<embed height="0" width="0" src="dogs barking.mp3">		
+    </td>
+    </tr>
+  </table>
+  </p>
+</form>
+</body>
+</html>
